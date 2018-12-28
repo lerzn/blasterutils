@@ -4,7 +4,7 @@ from urllib.parse import urlsplit, urlunsplit, parse_qs, urlencode
 def change_params_in_url(url: str, replace_dict: dict, strict=True):
     """
     :param url: string url
-    :param replace_dict: dictionary {param_name: new_value, param_name2: new_value2}
+    :param replace_dict: dictionary of keys to replace with new values {param_name: new_value, param_name2: new_value2}
     :param strict: if True (default) will only replace existing params, if False will add new params to URL
     :return: string url
     """
