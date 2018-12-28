@@ -5,6 +5,7 @@ from dateutil import parser
 def daterange(start_date, end_date):
     """
     Accepts either datetime objects or str in format YYYY-MM-DD for start_date and end_date.
+    Works similar to built-in range(). Source: https://stackoverflow.com/a/1060330/9268478
 
     Usage:
 
