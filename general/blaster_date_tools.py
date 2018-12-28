@@ -1,4 +1,4 @@
-from datetime import timedelta, date, datetime
+from datetime import timedelta, datetime
 from dateutil import parser
 
 
@@ -8,8 +8,8 @@ def daterange(start_date, end_date):
 
     Usage:
 
-    >>>for single_date in daterange('2018-12-01', '2018-12-05'):
-    >>>    print(single_date)
+    >>> for single_date in daterange('2018-12-01', '2018-12-05'):
+    >>>     print(single_date)
     2018-12-01 00:00:00
     2018-12-02 00:00:00
     2018-12-03 00:00:00
