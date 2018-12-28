@@ -17,7 +17,7 @@ def change_params_in_url(url: str, replace_dict: dict, strict=True):
             raise KeyError(f"{k}")
         query_dict[k] = [v]
 
-    new_query = urlencode(query_dict)
+    new_query = urlencode(query_dict, True)
 
     return urlunsplit(
         [
