@@ -8,7 +8,7 @@ def daterange(start_date, end_date):
 
     Usage:
 
-    >>>for single_date in in daterange('2018-12-01', '2018-12-05'):
+    >>>for single_date in daterange('2018-12-01', '2018-12-05'):
     >>>    print(single_date)
     2018-12-01 00:00:00
     2018-12-02 00:00:00
@@ -25,4 +25,3 @@ def daterange(start_date, end_date):
         end_date = parser.parse(end_date)
     for n in range(int((end_date - start_date).days)):
         yield start_date + timedelta(n)
-
