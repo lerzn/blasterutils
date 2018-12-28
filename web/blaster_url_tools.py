@@ -14,7 +14,7 @@ def change_params_in_url(url: str, replace_dict: dict, strict=True):
 
     for k, v in replace_dict.items():
         if strict and k not in query_dict.keys():
-            raise KeyError(f"{k}")
+            raise KeyError(f"{k}, set strict to false if you want to add a param to url.")
         query_dict[k] = [v]
 
     new_query = urlencode(query_dict, True)
