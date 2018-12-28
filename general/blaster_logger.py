@@ -4,7 +4,7 @@ import time
 from functools import wraps
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
-LOG_DIR = "YOUR LOG DIR"
+LOG_DIR = "YOUR LOG DIR IMPORT HERE"
 
 full_logfile = os.path.join(LOG_DIR, "full.log")
 logfile = os.path.join(LOG_DIR, "main.log")
@@ -22,7 +22,7 @@ fh = RotatingFileHandler(
     maxBytes=2 * 1024 * 1024,
     backupCount=100,
     encoding="UTF-8",
-    delay=0,
+    delay=False,
 )
 
 fh2 = TimedRotatingFileHandler(
@@ -66,10 +66,13 @@ def log_this(func):
             log_result = result.split("\n")[0]
         else:
             log_result = result
-        if execution_time > 3:
-            logger.warning(
-                f"Long execution time: {execution_time} [{func.__module__}.{func.__name__}]"
+        if execution_time > 3 < 10:
+            logger.info(
+                f"Execution time: {execution_time} [{func.__module__}.{func.__name__}]"
             )
+        elif execution_time >= 10:
+            logger.warning(f"Long execution time: {execution_time} [{func.__module__}.{func.__name__}]")
+
         else:
             logger.debug(
                 f"Execution time: {round(end_time - start_time, 4)} [{func.__module__}.{func.__name__}]"
