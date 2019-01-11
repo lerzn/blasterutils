@@ -4,54 +4,56 @@ import time
 from functools import wraps
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
-LOG_DIR = "YOUR LOG DIR IMPORT HERE"
 
-full_logfile = os.path.join(LOG_DIR, "full.log")
-logfile = os.path.join(LOG_DIR, "main.log")
-file_formatter = logging.Formatter(
-    "%(levelname)-8s %(message)-4s  [%(name)s] [%(filename)s.%(funcName)s] [%(asctime)s]"
-)
+def make_logger(LOG_DIR):
+    LOG_DIR = "YOUR LOG DIR IMPORT HERE"
 
-console_formatter = logging.Formatter(
-    "%(levelname)-8s %(message)-8s  [%(filename)s] [%(asctime)s]"
-)
+    full_logfile = os.path.join(LOG_DIR, "full.log")
+    logfile = os.path.join(LOG_DIR, "main.log")
+    file_formatter = logging.Formatter(
+        "%(levelname)-8s %(message)-4s  [%(name)s] [%(filename)s.%(funcName)s] [%(asctime)s]"
+    )
 
-fh = RotatingFileHandler(
-    full_logfile,
-    mode="a",
-    maxBytes=2 * 1024 * 1024,
-    backupCount=100,
-    encoding="UTF-8",
-    delay=False,
-)
+    console_formatter = logging.Formatter(
+        "%(levelname)-8s %(message)-8s  [%(filename)s] [%(asctime)s]"
+    )
 
-fh2 = TimedRotatingFileHandler(
-    logfile, when="midnight", interval=24, backupCount=7, encoding="UTF-8"
-)
+    fh = RotatingFileHandler(
+        full_logfile,
+        mode="a",
+        maxBytes=2 * 1024 * 1024,
+        backupCount=100,
+        encoding="UTF-8",
+        delay=False,
+    )
 
-error_log = TimedRotatingFileHandler(
-    os.path.join(LOG_DIR, "errors.log"),
-    when="midnight",
-    interval=24,
-    backupCount=60,
-    encoding="UTF-8",
-)
+    fh2 = TimedRotatingFileHandler(
+        logfile, when="midnight", interval=24, backupCount=7, encoding="UTF-8"
+    )
 
-fh2.setLevel(logging.INFO)
-fh.setLevel(logging.DEBUG)
-error_log.setLevel(logging.ERROR)
+    error_log = TimedRotatingFileHandler(
+        os.path.join(LOG_DIR, "errors.log"),
+        when="midnight",
+        interval=24,
+        backupCount=60,
+        encoding="UTF-8",
+    )
 
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
+    fh2.setLevel(logging.INFO)
+    fh.setLevel(logging.DEBUG)
+    error_log.setLevel(logging.ERROR)
 
-fh.setFormatter(file_formatter)
-ch.setFormatter(console_formatter)
-fh2.setFormatter(file_formatter)
-error_log.setFormatter(file_formatter)
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
 
-logging.basicConfig(level=logging.DEBUG, handlers=[fh, ch, fh2, error_log])
+    fh.setFormatter(file_formatter)
+    ch.setFormatter(console_formatter)
+    fh2.setFormatter(file_formatter)
+    error_log.setFormatter(file_formatter)
 
-logger = logging.getLogger("BOT")
+    logging.basicConfig(level=logging.DEBUG, handlers=[fh, ch, fh2, error_log])
+
+    return logging.getLogger("MAIN")
 
 
 def log_this(func):
