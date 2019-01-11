@@ -56,6 +56,9 @@ def make_logger(LOG_DIR):
     return logging.getLogger("MAIN")
 
 
+logger = make_logger(LOG_DIR)
+
+
 def log_this(func):
     @wraps(func)
     def decorator(*args, **kwargs):
