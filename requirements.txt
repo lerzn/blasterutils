@@ -2,3 +2,5 @@ python-telegram-bot
 PyYAML
 pytest
 python-dateutil
+sqlalchemy
+psycopg2
