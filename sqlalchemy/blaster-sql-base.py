@@ -1,9 +1,9 @@
 import functools
 import logging
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.exc import OperationalError
-from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.ext.declarative import declared_attr, declarative_base
 
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -133,3 +133,14 @@ class ModelBase:
 
     def __repr__(self):
         return f"{type(self).__name__}(id={self.id if self.id else 'None'})"
+
+
+def _make_sql_alchemy_base(my_engine=None):
+    mymetadata = MetaData()
+    if my_engine:
+        return declarative_base(cls=ModelBase, metadata=mymetadata, bind=my_engine)
+    else:
+        return declarative_base(cls=ModelBase, metadata=mymetadata)
+
+
+Model = _make_sql_alchemy_base(my_engine=db)
