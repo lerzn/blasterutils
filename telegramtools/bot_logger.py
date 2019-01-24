@@ -5,7 +5,7 @@ from functools import wraps
 from telegram import Bot, TelegramError
 
 
-def exception_reporter(func):
+def bot_report_exceptions(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not os.environ.get('BOT_TOKEN_REPORTER'):
