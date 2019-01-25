@@ -1,8 +1,11 @@
 import time
 
-import telegram
-from telegram import MAX_MESSAGE_LENGTH, TelegramError
-from telegram.error import BadRequest, NetworkError
+try:
+    import telegram
+    from telegram import MAX_MESSAGE_LENGTH, TelegramError
+    from telegram.error import BadRequest, NetworkError
+except ModuleNotFoundError:
+    pass
 
 from ..general_tools.blaster_logger import log_this, logger  # uses log_this and logger from general/blaster_logger.py
 
