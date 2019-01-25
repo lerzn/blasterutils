@@ -1,5 +1,10 @@
 from datetime import timedelta, datetime
-from dateutil import parser
+
+try:
+    # pip install python-dateutil
+    from dateutil import parser
+except ModuleNotFoundError:
+    pass
 
 
 def daterange(start_date, end_date):

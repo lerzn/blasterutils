@@ -2,8 +2,13 @@ from collections import abc, UserDict
 from functools import lru_cache
 from keyword import iskeyword
 
-import yaml
 import json
+
+try:
+    # pip install PyYAML
+    import yaml
+except ModuleNotFoundError:
+    pass
 
 
 @lru_cache(maxsize=32)

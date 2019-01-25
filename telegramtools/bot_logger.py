@@ -2,7 +2,10 @@ import logging
 import os
 from functools import wraps
 
-from telegram import Bot, TelegramError
+try:
+    from telegram import Bot, TelegramError
+except ModuleNotFoundError:
+    pass
 
 
 def bot_report_exceptions(func):

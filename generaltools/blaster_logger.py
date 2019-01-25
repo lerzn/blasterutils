@@ -45,6 +45,8 @@ def make_logger(log_dir):
 
     ch = logging.StreamHandler()
     ch.setLevel(logging.INFO)
+    if os.environ.get('DEBUG'):
+        ch.setLevel(logging.DEBUG)
 
     fh.setFormatter(file_formatter)
     ch.setFormatter(console_formatter)
@@ -57,6 +59,8 @@ def make_logger(log_dir):
 
 
 logger = make_logger(LOG_DIR)
+if os.environ.get('DEBUG'):
+    logger.warning('DEBUG MODE ON. ALL MESSAGES WILL BE PRINTED TO CONSOLE.')
 
 
 def log_this(func):
@@ -71,36 +75,12 @@ def log_this(func):
             log_result = result.split("\n")[0]
         else:
             log_result = result
-        if execution_time > 3 < 10:
-            logger.info(
-                f"Execution time: {execution_time} [{func.__module__}.{func.__name__}]"
-            )
-        elif execution_time >= 10:
+
+        if execution_time >= 10:
             logger.warning(f"Long execution time: {execution_time} [{func.__module__}.{func.__name__}]")
 
-        else:
-            logger.debug(
-                f"Execution time: {round(end_time - start_time, 4)} [{func.__module__}.{func.__name__}]"
-            )
-        logger.debug(f"Result {func.__name__}: {log_result} [{func.__module__}]")
+        logger.debug(f"Execution time: {execution_time}s. Result: {func.__name__}: {log_result} [{func.__module__}]")
         logger.debug(f"Exit: {func.__name__} [{func.__module__}]")
-        return result
-
-    return decorator
-
-
-def log_this_console(func):
-    @wraps(func)
-    def decorator(*args, **kwargs):
-        logger.info(f"Enter: {func.__name__} [{func.__module__}]")
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        logger.info(
-            f"Execution time: {round(end_time - start_time, 4)} [{func.__module__}.{func.__name__}]"
-        )
-        logger.info(f"Result {func.__name__}: {result} [{func.__module__}]")
-        logger.info(f"Exit: {func.__name__} [{func.__module__}]")
         return result
 
     return decorator

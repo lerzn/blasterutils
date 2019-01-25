@@ -1,11 +1,15 @@
 import functools
 import logging
 
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.exc import OperationalError
-from sqlalchemy.ext.declarative import declared_attr, declarative_base
+try:
+    # pip install sqlalchemy
+    from sqlalchemy import create_engine, MetaData
+    from sqlalchemy.exc import OperationalError
+    from sqlalchemy.ext.declarative import declared_attr, declarative_base
 
-from sqlalchemy.orm import scoped_session, sessionmaker
+    from sqlalchemy.orm import scoped_session, sessionmaker
+except ModuleNotFoundError:
+    pass
 
 
 def not_read_only(func):
