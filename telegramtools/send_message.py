@@ -1,6 +1,7 @@
 import time
 
 try:
+    # pip install python-telegram-bot
     import telegram
     from telegram import MAX_MESSAGE_LENGTH, TelegramError
     from telegram.error import BadRequest, NetworkError

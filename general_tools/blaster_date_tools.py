@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 
 try:
+    # pip install python-dateutil
     from dateutil import parser
 except ModuleNotFoundError:
     pass

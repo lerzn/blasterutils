@@ -2,6 +2,7 @@ import functools
 import logging
 
 try:
+    # pip install sqlalchemy
     from sqlalchemy import create_engine, MetaData
     from sqlalchemy.exc import OperationalError
     from sqlalchemy.ext.declarative import declared_attr, declarative_base
