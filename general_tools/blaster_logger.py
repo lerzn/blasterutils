@@ -4,12 +4,12 @@ import time
 from functools import wraps
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
+from definitions import LOG_DIR  # Required for logger to work
 
-def make_logger(LOG_DIR):
-    LOG_DIR = "YOUR LOG DIR IMPORT HERE"
 
-    full_logfile = os.path.join(LOG_DIR, "full.log")
-    logfile = os.path.join(LOG_DIR, "main.log")
+def make_logger(log_dir):
+    full_logfile = os.path.join(log_dir, "full.log")
+    logfile = os.path.join(log_dir, "main.log")
     file_formatter = logging.Formatter(
         "%(levelname)-8s %(message)-4s  [%(name)s] [%(filename)s.%(funcName)s] [%(asctime)s]"
     )
