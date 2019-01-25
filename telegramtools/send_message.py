@@ -8,7 +8,7 @@ try:
 except ModuleNotFoundError:
     pass
 
-from ..general_tools.blaster_logger import log_this, logger  # uses log_this and logger from general/blaster_logger.py
+from ..generaltools.blaster_logger import log_this, logger  # uses log_this and logger from general/blaster_logger.py
 
 
 @log_this
