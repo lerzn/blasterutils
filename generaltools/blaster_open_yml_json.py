@@ -71,6 +71,15 @@ class MyNamespace(UserDict):
         else:
             return value
 
+    def keys(self):
+        return list(set(self.__keys))
+
+    def values(self):
+        return [getattr(self, key) for key in self.__keys]
+
+    def items(self):
+        return [(key, getattr(self, key)) for key in self.__keys]
+
     def __getitem__(self, item):
         if hasattr(self, item):
             return getattr(self, item)
