@@ -27,7 +27,7 @@ def get_data_from_google_spreadsheet(service, spreadsheet_id, range_name, as_df=
     if result:
         if not as_df:
             return result.get("values")
-        return df_from_result(result)
+        return df_from_result(result.get('values'))
 
 
 def df_from_result(result):
