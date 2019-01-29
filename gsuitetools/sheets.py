@@ -1,11 +1,8 @@
-try:
-    import pandas as pd
+import pandas as pd
 
-    from googleapiclient.discovery import build
-    from httplib2 import Http
-    from oauth2client import file, client, tools
-except ModuleNotFoundError:
-    pass
+from googleapiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 
@@ -20,7 +17,7 @@ def make_sheets_api_service(token_json_filename):
     return service
 
 
-def get_data_from_google_spreadsheet(service, spreadsheet_id, range_name):
+def get_data_from_google_spreadsheet(service, spreadsheet_id, range_name, as_df=False):
     result = (
         service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id,
@@ -28,7 +25,9 @@ def get_data_from_google_spreadsheet(service, spreadsheet_id, range_name):
     )
 
     if result:
-        return result.get("values")
+        if not as_df:
+            return result.get("values")
+        return df_from_result(result)
 
 
 def df_from_result(result):
