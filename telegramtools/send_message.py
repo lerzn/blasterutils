@@ -16,7 +16,7 @@ def send_message(
     bot,
     user_id,
     response,
-    parse_mode=telegram.ParseMode.MARKDOWN,
+    parse_mode="MARKDOWN",
     reply_markup=None,
     disable_web_page_preview=True,
 ):
@@ -52,7 +52,7 @@ def _send_single_message(
     bot,
     telegram_id,
     message,
-    parse_mode=telegram.ParseMode.MARKDOWN,
+    parse_mode="MARKDOWN",
     reply_markup=None,
     disable_web_page_preview=True,
 ):
