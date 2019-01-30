@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 
 
 def make_sheets_api_service(token_json_filename):
@@ -33,3 +33,4 @@ def get_data_from_google_spreadsheet(service, spreadsheet_id, range_name, as_df=
 def df_from_result(result):
     if result:
         return pd.DataFrame(result)
+
