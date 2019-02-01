@@ -38,6 +38,8 @@ def command_dispatch(func):
             command = text.split()[0]
             kwargs['args'] = text.split()[1:]
 
+        logger.info(f'{update.effective_user.full_name} ({update.effective_user.id}) launched: {command}')
+
         return dispatch(command)(bot, update, *args, **kwargs)
 
     registry[object] = func
