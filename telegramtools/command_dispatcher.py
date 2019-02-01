@@ -1,6 +1,6 @@
-from functools import singledispatch, update_wrapper
+from functools import update_wrapper
 
-from blasterutils.generaltools import logger
+import logging
 
 
 def command_dispatch(func):
@@ -15,7 +15,7 @@ def command_dispatch(func):
         try:
             impl = registry[command]
         except KeyError:
-            logger.warning(f"Unregistered command: {command}")
+            logging.warning(f"Unregistered command: {command}")
             return unregistered_command
 
         return impl
@@ -38,7 +38,7 @@ def command_dispatch(func):
             command = text.split()[0]
             kwargs['args'] = text.split()[1:]
 
-        logger.info(f'{update.effective_user.full_name} ({update.effective_user.id}) launched: {command}')
+        logging.info(f'{command} from {update.effective_user.full_name} ({update.effective_user.id})')
 
         return dispatch(command)(bot, update, *args, **kwargs)
 
@@ -49,4 +49,3 @@ def command_dispatch(func):
     update_wrapper(wrapper, func)
 
     return wrapper
-
