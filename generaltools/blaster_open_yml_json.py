@@ -55,12 +55,12 @@ def open_json(filename, as_dict=False, top_key=None):
 
 class MyNamespace(UserDict):
     def __init__(self, mapping):
-        self.__keys = []
+        self.__keys = set()
         for key, value in mapping.items():
             if iskeyword(key):
                 key += "_"
             setattr(self, key, self.build(value))
-            self.__keys.append(key)
+            self.__keys.add(key)
 
     @classmethod
     def build(cls, value):
@@ -71,13 +71,24 @@ class MyNamespace(UserDict):
         else:
             return value
 
+    def keys(self):
+        return list(self.__keys)
+
+    def values(self):
+        return [getattr(self, key) for key in self.__keys]
+
+    def items(self):
+        return [(key, getattr(self, key)) for key in self.__keys]
+
     def __getitem__(self, item):
         if hasattr(self, item):
             return getattr(self, item)
         raise AttributeError(f'{item}')
 
     def __repr__(self):
-        return f"MyNamespace({self.__dict__})"
+        copy = self.__dict__.copy()
+        del copy['_MyNamespace__keys']
+        return f"MyNamespace({copy})"
 
     def __delitem__(self, key):
         raise TypeError('MyNamespace object does not support item assignment')
