@@ -46,16 +46,15 @@ Session = scoped_session(sessionmaker(db))
 
 def create_session(func):
     @functools.wraps(func)
-    def inner(*args, **kwargs):
-        session = Session()
+    def inner(self, *args, **kwargs):
+        self.session = Session()
         try:
-            query_response = func(*args, session=session, **kwargs)
-            return query_response
+            return func(self, *args, **kwargs)
         except OperationalError as e:
             logging.warning(f'{e}')
         except Exception as e:
             logging.error(f'{e}')
-            session.rollback()
+            self.session.rollback()
             raise
 
     return inner
@@ -66,6 +65,7 @@ class ModelBase:
     Class name must reflect the corresponding table name and end with 'Model'. For example
     if you table is called 'user', class must be named UserModel.
     """
+    session = None
 
     @declared_attr
     def __tablename__(cls):
@@ -78,33 +78,33 @@ class ModelBase:
 
     @classmethod
     @create_session
-    def find_by_id(cls, id_, session=None):
-        return session.query(cls).get(id_)
+    def find_by_id(cls, id_):
+        return cls.session.query(cls).get(id_)
 
     @classmethod
     @create_session
-    def find_all(cls, count=False, session=None):
+    def find_all(cls, count=False):
         logging.debug(f'{cls.__name__}: finding all')
         if not count:
-            return session.query(cls).all()
-        return session.query(cls).count()
+            return cls.session.query(cls).all()
+        return cls.session.query(cls).count()
 
     @classmethod
     @create_session
-    def find_many_by_list_of_ids(cls, list_of_ids, *, session):
+    def find_many_by_list_of_ids(cls, list_of_ids):
         if not list_of_ids:
             return None
-        query = session.query(cls).filter(
+        query = cls.session.query(cls).filter(
             cls.id.in_(list_of_ids)
         )
         return query.all()
 
     # New save_to_db
     @not_read_only
+    @create_session
     def save_to_db(self):
-        session = Session()
         # Check if a session for object is already open an utilize if it is.
-        existing_session = session.object_session(self)
+        existing_session = self.session.object_session(self)
         try:
             logging.debug(f'Looking for existing session for {self}')
             existing_session.add(self)
@@ -112,21 +112,21 @@ class ModelBase:
             logging.info(f'Saved {self} using existing object session')
         except AttributeError:
             logging.info(f'Existing session not found. Saving {self} using new session')
-            session.add(self)
-            session.commit()
+            self.session.add(self)
+            self.session.commit()
         except Exception as e:
             logging.critical(f'Save to DB failed: {e}')
-            session.rollback()
+            self.session.rollback()
             raise
 
     @not_read_only
     @create_session
-    def delete_from_db(self, session=None):
-        existing_session = session.object_session(self)
+    def delete_from_db(self):
+        existing_session = self.session.object_session(self)
         if existing_session:
-            session = existing_session
-        session.delete(self)
-        session.commit()
+            self.session = existing_session
+        self.session.delete(self)
+        self.session.commit()
 
     def __eq__(self, other):
         if not type(self) == type(other):
