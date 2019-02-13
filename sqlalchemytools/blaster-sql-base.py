@@ -29,7 +29,7 @@ def make_sqlalchemy_engine(conn_params: dict):
     :param conn_params:
     :return:
     """
-    connection_string = f"postgresql+psycopg2://{conn_params['db_host']}:" \
+    connection_string = f"postgresql+psycopg2://{conn_params['db_user']}:" \
         f"{conn_params['db_pwd']}@{conn_params['db_host']}:{conn_params['db_port']}/{conn_params['db_name']}"
     engine = create_engine(
         connection_string,
