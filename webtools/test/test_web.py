@@ -2,8 +2,8 @@ import pytest
 
 from web import change_params_in_url
 
-url = "https://www.etsy.com/your/shops/me/stats/traffic?ref=seller-platform-mcnav&start_date=2018-12-24&end_date=2018-12-25"
-test_result_url = "https://www.etsy.com/your/shops/me/stats/traffic?ref=seller-platform-mcnav&start_date=2018-01-01&end_date=2018-01-30"
+url = "https://www.etsy.com/your/shops/me/stats_page/traffic?ref=seller-platform-mcnav&start_date=2018-12-24&end_date=2018-12-25"
+test_result_url = "https://www.etsy.com/your/shops/me/stats_page/traffic?ref=seller-platform-mcnav&start_date=2018-01-01&end_date=2018-01-30"
 
 
 def test_change_params_in_url_basic():
