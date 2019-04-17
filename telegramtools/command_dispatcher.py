@@ -1,6 +1,8 @@
+import logging
 from functools import update_wrapper
 
-import logging
+from telegram import Update
+from telegram.ext import CallbackContext
 
 
 def command_dispatch(func):
@@ -17,7 +19,7 @@ def command_dispatch(func):
     """
     registry = {}
 
-    def unregistered_command(bot, update, *args, **kwargs):
+    def unregistered_command(update: Update, context: CallbackContext, **kwargs):
         return
 
     def dispatch(command):
@@ -57,7 +59,7 @@ def command_dispatch(func):
 
         return func
 
-    def wrapper(bot, update, *args, **kwargs):
+    def wrapper(update: Update, context: CallbackContext, *args, **kwargs):
         text = update.message.text
         if len(text.split()) == 1:
             command = text
@@ -70,7 +72,7 @@ def command_dispatch(func):
 
         logging.info(f'{command} from {update.effective_user.full_name} ({update.effective_user.id})')
 
-        return dispatch(command)(bot, update, *args, **kwargs)
+        return dispatch(command)(update, context, *args, **kwargs)
 
     registry[object] = func
     wrapper.register = register
